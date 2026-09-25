@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Group } from 'three';
@@ -6,10 +6,11 @@ import { Group } from 'three';
 interface PalmTreesProps {
   onPointerOver?: () => void;
   onPointerOut?: () => void;
+  onClick?: () => void;
   hovered?: boolean;
 }
 
-export default function PalmTrees({ onPointerOver, onPointerOut, hovered }: PalmTreesProps) {
+export default function PalmTrees({ onPointerOver, onPointerOut, onClick, hovered }: PalmTreesProps) {
   // Tree 1 Trunk Curve (leaning left)
   const curve1 = useMemo(() => {
     return new THREE.CatmullRomCurve3([
@@ -31,33 +32,42 @@ export default function PalmTrees({ onPointerOver, onPointerOut, hovered }: Palm
   }, []);
 
   return (
-    <group onPointerOver={onPointerOver} onPointerOut={onPointerOut}>
+    <group onPointerOver={onPointerOver} onPointerOut={onPointerOut} onClick={onClick}>
       <PalmTree 
         position={[-0.5, 0.3, -0.2]} 
         curve={curve1} 
         leafCount={7} 
         timeOffset={0}
+        hovered={hovered}
       />
       <PalmTree 
         position={[-0.2, 0.3, -0.3]} 
         curve={curve2} 
         leafCount={8} 
         timeOffset={1.5}
+        hovered={hovered}
       />
     </group>
   );
 }
 
+const pseudoRandom = (seed: number) => {
+  const x = Math.sin(seed * 12.9898) * 43758.5453;
+  return x - Math.floor(x);
+};
+
 function PalmTree({ 
   position, 
   curve, 
   leafCount,
-  timeOffset
+  timeOffset,
+  hovered
 }: { 
   position: [number, number, number], 
   curve: THREE.CatmullRomCurve3,
   leafCount: number,
-  timeOffset: number
+  timeOffset: number,
+  hovered?: boolean
 }) {
   const treeGroupRef = useRef<Group>(null);
   const leavesRef = useRef<Group>(null);
@@ -80,7 +90,7 @@ function PalmTree({
       const col = useColor1 ? color1 : color2;
       
       // add slight random variation
-      const rVar = (Math.random() - 0.5) * 0.05;
+      const rVar = (pseudoRandom(i + 1) - 0.5) * 0.05;
       
       colors[i * 3] = col.r + rVar;
       colors[i * 3 + 1] = col.g + rVar;
@@ -114,12 +124,12 @@ function PalmTree({
 
     for (let i = 0; i < leafCount; i++) {
       const angle = (i / leafCount) * Math.PI * 2;
-      const color = colors[Math.floor(Math.random() * colors.length)];
+      const color = colors[Math.floor(pseudoRandom(i * 3 + leafCount) * colors.length)];
       
       arr.push({
         rotation: [0, angle, 0] as [number, number, number],
         color: color,
-        phase: Math.random() * Math.PI * 2
+        phase: pseudoRandom(i * 7 + leafCount) * Math.PI * 2
       });
     }
     return { leafGeo, data: arr };
@@ -171,6 +181,8 @@ function PalmTree({
                 color={frond.color}
                 roughness={0.6}
                 side={THREE.DoubleSide}
+                emissive={hovered ? '#ffffff' : '#000000'}
+                emissiveIntensity={hovered ? 0.08 : 0}
               />
             </mesh>
           </group>

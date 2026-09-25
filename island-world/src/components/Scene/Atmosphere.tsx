@@ -1,18 +1,7 @@
-import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 
 export default function Atmosphere() {
-  const { scene } = useThree()
-
-  useEffect(() => {
-    const fog = new THREE.FogExp2('#9ac5c5', 0.008)
-    scene.fog = fog
-    return () => {
-      scene.fog = null
-    }
-  }, [scene])
-
   const shaderArgs = useMemo(() => {
     return {
       uniforms: {
@@ -45,9 +34,12 @@ export default function Atmosphere() {
   }, [])
 
   return (
-    <mesh>
-      <sphereGeometry args={[100, 32, 32]} />
-      <shaderMaterial attach="material" {...shaderArgs} />
-    </mesh>
+    <>
+      <fogExp2 attach="fog" args={['#9ac5c5', 0.008]} />
+      <mesh>
+        <sphereGeometry args={[100, 32, 32]} />
+        <shaderMaterial attach="material" {...shaderArgs} />
+      </mesh>
+    </>
   )
 }

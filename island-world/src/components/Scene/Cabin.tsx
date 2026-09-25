@@ -1,17 +1,23 @@
 import React, { useMemo } from 'react';
-import { GroupProps } from '@react-three/fiber';
+import type { ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
 
-interface CabinProps extends GroupProps {
+type CabinProps = ThreeElements['group'] & {
   position?: [number, number, number];
-  onPointerOver?: (e: any) => void;
-  onPointerOut?: (e: any) => void;
+  onPointerOver?: (e: unknown) => void;
+  onPointerOut?: (e: unknown) => void;
   hovered?: boolean;
-}
+};
+
+const WALL_COLOR_BASE = new THREE.Color('#89ccc8');
+
+const pseudoRandom = (seed: number) => {
+  const x = Math.sin(seed * 12.9898) * 43758.5453;
+  return x - Math.floor(x);
+};
 
 const Cabin: React.FC<CabinProps> = ({ position = [0.3, 0.45, 0], hovered, ...props }) => {
   // Colors
-  const wallColorBase = new THREE.Color('#89ccc8');
   const roofColor = '#c45a3c';
   const doorColor = '#c44a2a';
   const windowGlass = '#1a3a3a';
@@ -29,10 +35,10 @@ const Cabin: React.FC<CabinProps> = ({ position = [0.3, 0.45, 0], hovered, ...pr
     
     for (let i = 0; i < numPlanks; i++) {
       // Very subtle variation
-      const hueShift = (Math.random() - 0.5) * 0.02;
-      const lightShift = (Math.random() - 0.5) * 0.05;
+      const hueShift = (pseudoRandom(i * 2 + 1) - 0.5) * 0.02;
+      const lightShift = (pseudoRandom(i * 2 + 2) - 0.5) * 0.05;
       
-      const c = wallColorBase.clone().offsetHSL(hueShift, 0, lightShift);
+      const c = WALL_COLOR_BASE.clone().offsetHSL(hueShift, 0, lightShift);
       
       p.push({
         y: -height/2 + plankHeight/2 + i * plankHeight,
@@ -79,7 +85,7 @@ const Cabin: React.FC<CabinProps> = ({ position = [0.3, 0.45, 0], hovered, ...pr
         {/* Gable filler (front and back) */}
         <mesh position={[0, 0.1, 0]} rotation={[0, Math.PI / 4, 0]} castShadow receiveShadow>
             <boxGeometry args={[0.55, 0.55, 0.78]} />
-            <meshStandardMaterial color={wallColorBase} roughness={0.7} emissive={emissiveColor} emissiveIntensity={emissiveIntensity} />
+            <meshStandardMaterial color={WALL_COLOR_BASE} roughness={0.7} emissive={emissiveColor} emissiveIntensity={emissiveIntensity} />
         </mesh>
       </group>
 

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -6,10 +6,11 @@ interface BoatProps {
   position?: [number, number, number];
   onPointerOver?: () => void;
   onPointerOut?: () => void;
+  onClick?: () => void;
   hovered?: boolean;
 }
 
-export default function Boat({ position = [0.8, 0.0, 1.2], onPointerOver, onPointerOut, hovered }: BoatProps) {
+export default function Boat({ position = [0.8, 0.0, 1.2], onPointerOver, onPointerOut, onClick, hovered }: BoatProps) {
   const group = useRef<THREE.Group>(null);
 
   useFrame((state) => {
@@ -29,6 +30,7 @@ export default function Boat({ position = [0.8, 0.0, 1.2], onPointerOver, onPoin
       position={position} 
       onPointerOver={onPointerOver} 
       onPointerOut={onPointerOut}
+      onClick={onClick}
       dispose={null}
     >
       <group position={[0, 0.05, 0]}>

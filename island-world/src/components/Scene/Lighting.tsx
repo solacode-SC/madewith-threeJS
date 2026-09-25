@@ -1,6 +1,3 @@
-import { useRef } from 'react'
-import * as THREE from 'three'
-
 export default function Lighting() {
   return (
     <>
