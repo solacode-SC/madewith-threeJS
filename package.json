@@ -1,0 +1,33 @@
+{
+  "name": "madewith-threejs-platform",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Interactive Japanese Concept Sheet & 3D World Discovery Platform for Three.js / R3F Worlds",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5173",
+    "build": "tsc -b && vite build && node scripts/bundle-worlds.mjs",
+    "build:worlds": "node scripts/bundle-worlds.mjs --rebuild",
+    "build:all": "node scripts/bundle-worlds.mjs --rebuild && tsc -b && vite build && node scripts/bundle-worlds.mjs",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "prod": "node server.mjs",
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.8.0",
+    "gsap": "^3.15.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@types/three": "^0.186.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.1"
+  }
+}
