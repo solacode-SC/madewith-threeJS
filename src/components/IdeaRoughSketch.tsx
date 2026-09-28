@@ -393,6 +393,58 @@ export const IdeaRoughSketch: React.FC<IdeaRoughSketchProps> = ({ project }) => 
             </g>
           </svg>
         )
+
+      case 'maple-valley-city':
+        return (
+          <svg viewBox="0 0 460 195" className="rough-svg" aria-label="Maple Valley City Idea Rough">
+            <g stroke="#CBD5E1" strokeWidth="0.6" strokeDasharray="3 3" opacity="0.6">
+              <line x1="15" y1="98" x2="445" y2="98" />
+              <line x1="155" y1="12" x2="155" y2="182" />
+              <line x1="305" y1="12" x2="305" y2="182" />
+            </g>
+
+            {/* Top-Left: Curved Slate Roof & Ivy-Draped Mini-Gable Doorway */}
+            <g stroke="#475569" strokeWidth="1.35" fill="none" strokeLinecap="round">
+              <path d="M 24 54 Q 72 34 120 54 L 112 30 Q 72 18 32 30 Z" fill="#CBD5E1" />
+              <rect x="34" y="54" width="76" height="30" fill="#FEF3C7" />
+              <path d="M 46 68 L 58 58 L 70 68 Z" fill="#94A3B8" />
+              <rect x="50" y="68" width="16" height="16" fill="#FDBA74" />
+            </g>
+            <text x="20" y="16" className="sketch-note">① 反り瓦屋根と蔦の小屋根</text>
+
+            {/* Top-Center: 11x11 Winding Brush Roads & Celadon Mountain Peak */}
+            <g stroke="#475569" strokeWidth="1.3" fill="none" strokeLinecap="round">
+              <path d="M 176 74 L 224 22 L 272 74 Z" fill="#D9E2CE" stroke="#65745A" />
+              <path d="M 188 84 Q 218 68 232 54 T 264 42" stroke="#D97706" strokeWidth="2.2" strokeDasharray="4 2" />
+              <text x="168" y="18" className="sketch-note">② 11×11 山道探索 &amp; 上空視点</text>
+            </g>
+
+            {/* Top-Right Colored Vignette: Persimmon Maple Tree & Kaede */}
+            <g transform="translate(318, 14)">
+              <ellipse cx="58" cy="62" rx="48" ry="16" fill="#FDE68A" stroke="#C2410C" strokeWidth="1.3" />
+              <path d="M 58 62 Q 52 44 58 28" stroke="#5C4433" strokeWidth="3.2" fill="none" />
+              <circle cx="58" cy="24" r="16" fill="#F97316" stroke="#C2410C" strokeWidth="1.2" />
+              <circle cx="44" cy="30" r="11" fill="#FB923C" />
+              <circle cx="72" cy="28" r="12" fill="#EA580C" />
+              <text x="6" y="86" className="sketch-note">③ 紅楓の巨木と旅人カエデ</text>
+            </g>
+
+            {/* Bottom Row: GLSL Brush Clouds, River Boulders & 3 Guzheng Songs */}
+            <g stroke="#475569" strokeWidth="1.25" fill="none" strokeLinecap="round">
+              <path d="M 32 148 Q 52 132 76 144 T 118 142" stroke="#64748B" strokeWidth="2" />
+              <text x="24" y="182" className="sketch-note-sm">GLSL 水彩筆致の雲海シェーダー</text>
+
+              <ellipse cx="212" cy="152" rx="16" ry="10" fill="#E2E8F0" />
+              <ellipse cx="234" cy="155" rx="12" ry="8" fill="#CBD5E1" />
+              <circle cx="202" cy="144" r="5" fill="#F472B6" />
+              <text x="180" y="182" className="sketch-note-sm">川石群とコスモスの花壇</text>
+
+              <rect x="334" y="128" width="82" height="34" rx="6" />
+              <text x="344" y="149" className="sketch-note-sm">🎵 3 SONGS</text>
+              <text x="328" y="182" className="sketch-note-sm">古筝・竹笛の3曲サウンド</text>
+            </g>
+          </svg>
+        )
     }
   }
 

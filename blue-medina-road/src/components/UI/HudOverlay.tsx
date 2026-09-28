@@ -432,7 +432,7 @@ export default function HudOverlay({
             </button>
           </div>
 
-          {/* Vertical Altitude & Boost Buttons */}
+          {/* Vertical Altitude & Action Buttons */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <button
               type="button"
@@ -456,16 +456,39 @@ export default function HudOverlay({
             </button>
           </div>
 
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <button
+              type="button"
+              onPointerDown={() => setInput('boost', true)}
+              onPointerUp={() => setInput('boost', false)}
+              onPointerLeave={() => setInput('boost', false)}
+              style={altBtnStyle}
+              title="Hold for Fast Boost Flight (Shift)"
+            >
+              ⚡ Fast Boost
+            </button>
+            <button
+              type="button"
+              onPointerDown={() => setInput('wave', true)}
+              onPointerUp={() => setInput('wave', false)}
+              onPointerLeave={() => setInput('wave', false)}
+              style={altBtnStyle}
+              title="Lumina turns and waves to camera (F)"
+            >
+              👋 Smile & Wave
+            </button>
+          </div>
+
           {/* Instructions */}
           <div style={{ fontSize: '11.5px', color: '#2b4f85', lineHeight: 1.45 }}>
             <div style={{ fontWeight: 700, color: '#0e2d68' }}>
               🕊️ Fly Lumina Along the Blue Road
             </div>
             <div>
-              <strong>WASD / Arrows</strong> to Glide • <strong>Shift</strong> Boost
+              <strong>WASD / Arrows</strong> to Glide • <strong>Shift</strong> Fast Boost
             </div>
             <div>
-              <strong>Space / C</strong> Altitude • <strong>Click Steps</strong> to Fly
+              <strong>Space / C</strong> Altitude • <strong>F</strong> Wave • <strong>Click Steps</strong> to Fly
             </div>
           </div>
         </div>

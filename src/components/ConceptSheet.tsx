@@ -1,206 +1,181 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { ProjectWorld } from '../data/projects'
-import { IdeaRoughSketch } from './IdeaRoughSketch'
 import { ProjectScreenPreview } from './ProjectScreenPreview'
 
 interface ConceptSheetProps {
   project: ProjectWorld
   totalProjects: number
+  index: number
 }
 
 export const ConceptSheet: React.FC<ConceptSheetProps> = ({
   project,
   totalProjects,
+  index,
 }) => {
-  const [infoTab, setInfoTab] = useState<'story' | 'landmarks' | 'controls'>('story')
+  const [detailTab, setDetailTab] = useState<'controls' | 'landmarks' | 'story'>('controls')
+  const [isVisible, setIsVisible] = useState(index === 0)
+  const cardRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const el = cardRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true)
+          }
+        })
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <article
+      ref={cardRef}
       id={`project-${project.slug}`}
-      className="concept-sheet-card"
+      className={`project-showcase-card ${isVisible ? 'is-visible' : ''} ${
+        index % 2 === 1 ? 'is-reversed' : ''
+      }`}
       style={
         {
-          '--sheet-accent': project.palette.accentBar,
-          '--sheet-ink-accent': project.palette.inkAccent,
+          '--project-accent': project.palette.accentBar,
+          '--project-ink': project.palette.inkAccent,
+          '--project-badge': project.protagonist.badgeColor,
         } as React.CSSProperties
       }
     >
-      {/* Top-Left Signature Gold Edge Block */}
-      <div className="sheet-left-edge-block" aria-hidden="true" />
-
-      {/* Top Editorial Header Row */}
-      <header className="sheet-header">
-        <div className="sheet-title-group">
-          <div className="sheet-category-line">
-            <span className="sheet-category-jp">{project.categoryJp}</span>
-            <span className="sheet-category-divider">•</span>
-            <span className="sheet-category-en">{project.categoryEn}</span>
+      <div className="project-card-grid">
+        {/* Clean Editorial Details Column */}
+        <div className="project-info-col">
+          <div className="project-eyebrow-row">
+            <span className="project-index-pill">
+              {project.id} <span className="index-slash">/</span> 0{totalProjects}
+            </span>
+            <span className="project-category-label">{project.categoryEn}</span>
           </div>
-          <h2 className="sheet-main-title">
+
+          <h2 className="project-title">
             <a
               href={project.worldUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="sheet-title-link"
-              title={`Open ${project.fullTitle} in a new page`}
+              className="project-title-link"
             >
-              {project.sheetTitle}
+              {project.fullTitle}
             </a>
           </h2>
-        </div>
 
-        {/* Top-Right Split Pill, Tool Icons & Direct New-Page Link */}
-        <div className="sheet-meta-group">
-          <div className="split-pill-badge" title="Engine & World Scale">
-            <span className="split-pill-left">{project.pillLeft}</span>
-            <span className="split-pill-right">{project.pillRight}</span>
-          </div>
+          <p className="project-summary">{project.shortSummary}</p>
 
-          <div className="tool-icon-row" aria-label="Tech Stack">
-            {project.toolBadges.map((badge, i) => (
-              <span
-                key={badge}
-                className={`tool-square-badge ${i === 0 ? 'is-round-glyph' : ''}`}
-                title={`Built with ${badge}`}
-              >
-                {badge}
-              </span>
+          {/* 3 Structured World Highlights */}
+          <div className="project-highlights-row">
+            {project.highlights.map((item) => (
+              <div key={item.label} className="project-highlight-cell">
+                <span className="highlight-label">{item.label}</span>
+                <strong className="highlight-value">{item.value}</strong>
+              </div>
             ))}
           </div>
 
-          <a
-            href={project.worldUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="all-worlds-trigger-btn"
-            title={`Open ${project.fullTitle} in a new browser tab`}
-          >
-            <span>OPEN PROJECT</span>
-            <span>↗</span>
-          </a>
-        </div>
-      </header>
+          {/* Minimal Segmented Details Switcher */}
+          <div className="project-details-box">
+            <div className="details-tabs-bar" role="tablist" aria-label="Project details">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={detailTab === 'controls'}
+                className={`details-tab-btn ${detailTab === 'controls' ? 'active' : ''}`}
+                onClick={() => setDetailTab('controls')}
+              >
+                Controls
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={detailTab === 'landmarks'}
+                className={`details-tab-btn ${detailTab === 'landmarks' ? 'active' : ''}`}
+                onClick={() => setDetailTab('landmarks')}
+              >
+                Landmarks ({project.landmarks.length})
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={detailTab === 'story'}
+                className={`details-tab-btn ${detailTab === 'story' ? 'active' : ''}`}
+                onClick={() => setDetailTab('story')}
+              >
+                About World
+              </button>
+            </div>
 
-      {/* Main Two-Column Asymmetric Split Body */}
-      <div className="sheet-body-grid">
-        {/* LEFT COLUMN: CONCEPT + IDEA ROUGH SKETCH + BRACKETED FEATURE STORY */}
-        <div className="sheet-left-col">
-          {/* CONCEPT Section */}
-          <section className="concept-section">
-            <div className="concept-eyebrow-row">
-              <h3 className="concept-eyebrow">CONCEPT</h3>
-              <span className="concept-world-index">
-                PROJECT {project.id} / 0{totalProjects}
+            <div className="details-tab-panel">
+              {detailTab === 'controls' && (
+                <div className="controls-compact-grid">
+                  {project.controls.map((ctrl) => (
+                    <div key={ctrl.keys} className="control-compact-item">
+                      <kbd className="control-kbd">{ctrl.keys}</kbd>
+                      <span className="control-desc">{ctrl.action}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {detailTab === 'landmarks' && (
+                <div className="landmarks-compact-list">
+                  {project.landmarks.map((lm, idx) => (
+                    <span key={lm} className="landmark-pill">
+                      <span className="landmark-num">0{idx + 1}</span>
+                      <span>{lm}</span>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {detailTab === 'story' && (
+                <div className="story-compact-copy">
+                  {project.featureStory.map((paragraph, idx) => (
+                    <p key={idx}>{paragraph}</p>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Primary Launch Action & Tag Chips */}
+          <div className="project-footer-actions">
+            <a
+              href={project.worldUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-primary-launch-btn"
+            >
+              <span>Explore 3D World</span>
+              <span className="btn-arrow" aria-hidden="true">
+                ↗
               </span>
+            </a>
+
+            <div className="project-tag-list">
+              {project.tags.slice(0, 3).map((tag) => (
+                <span key={tag} className="project-tag-pill">
+                  {tag}
+                </span>
+              ))}
             </div>
-
-            <h4 className="concept-headline-jp">{project.conceptHeadlineJp}</h4>
-            <p className="concept-headline-en">{project.conceptHeadlineEn}</p>
-            <p className="concept-lead-line">{project.conceptLead}</p>
-          </section>
-
-          {/* Middle Hand-Drawn Blueprint Sketch Box (アイデアラフ) */}
-          <section className="sketch-section">
-            <IdeaRoughSketch project={project} />
-          </section>
-
-          {/* Bottom Feature Story Section */}
-          <section className="feature-story-section">
-            <div className="feature-header-row">
-              <h4 className="feature-bracket-title">{project.featureBracketHeadline}</h4>
-
-              <div className="feature-mini-tabs" role="tablist">
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={infoTab === 'story'}
-                  className={`feature-tab-btn ${infoTab === 'story' ? 'active' : ''}`}
-                  onClick={() => setInfoTab('story')}
-                >
-                  Story
-                </button>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={infoTab === 'landmarks'}
-                  className={`feature-tab-btn ${infoTab === 'landmarks' ? 'active' : ''}`}
-                  onClick={() => setInfoTab('landmarks')}
-                >
-                  Landmarks ({project.landmarks.length})
-                </button>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={infoTab === 'controls'}
-                  className={`feature-tab-btn ${infoTab === 'controls' ? 'active' : ''}`}
-                  onClick={() => setInfoTab('controls')}
-                >
-                  Controls
-                </button>
-              </div>
-            </div>
-
-            {infoTab === 'story' && (
-              <div className="feature-story-paragraphs">
-                {project.featureStory.map((line, idx) => (
-                  <p key={idx}>{line}</p>
-                ))}
-              </div>
-            )}
-
-            {infoTab === 'landmarks' && (
-              <div className="feature-landmarks-list">
-                {project.landmarks.map((lm, idx) => (
-                  <span key={lm} className="landmark-chip">
-                    <strong>0{idx + 1}</strong> {lm}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            {infoTab === 'controls' && (
-              <div className="feature-controls-grid">
-                {project.controls.map((ctrl) => (
-                  <div key={ctrl.keys} className="control-item-row">
-                    <kbd>{ctrl.keys}</kbd>
-                    <span>{ctrl.action}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Golden-Ochre Bottom Rule */}
-            <div className="feature-gold-underline" />
-          </section>
+          </div>
         </div>
 
-        {/* RIGHT COLUMN: SCREEN OF THE THREE.JS PROJECT (CLICK TO OPEN IN NEW PAGE) */}
-        <div className="sheet-right-col">
-          <ProjectScreenPreview project={project} />
+        {/* Real 3D Project Screen Column */}
+        <div className="project-visual-col">
+          <ProjectScreenPreview project={project} priority={index < 2} />
         </div>
       </div>
-
-      {/* Project Presentation Footer with Tags & Direct Standalone Link */}
-      <footer className="sheet-footer-nav">
-        <div className="sheet-tag-chips">
-          {project.tags.map((tag) => (
-            <span key={tag} className="sheet-tag-chip">
-              #{tag}
-            </span>
-          ))}
-        </div>
-
-        <div className="sheet-keyboard-hint">
-          <a
-            href={project.worldUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sheet-footer-direct-link"
-          >
-            Launch standalone Three.js experience at <code>{project.worldUrl}</code> ↗
-          </a>
-        </div>
-      </footer>
     </article>
   )
 }

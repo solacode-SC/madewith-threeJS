@@ -7,7 +7,7 @@ interface AllWorldsGridProps {
   onClose: () => void
 }
 
-const FILTER_TAGS = ['All', 'Chibi Character', '3D Maze', 'Coastal / Ocean', 'Custom Shaders']
+const FILTER_TAGS = ['All', '3D Maze', 'Coastal / Ocean', 'Custom Shaders', 'Character']
 
 export const AllWorldsGrid: React.FC<AllWorldsGridProps> = ({
   projects,
@@ -27,7 +27,7 @@ export const AllWorldsGrid: React.FC<AllWorldsGridProps> = ({
         !q ||
         p.fullTitle.toLowerCase().includes(q) ||
         p.sheetTitle.toLowerCase().includes(q) ||
-        p.conceptHeadlineEn.toLowerCase().includes(q) ||
+        p.shortSummary.toLowerCase().includes(q) ||
         p.protagonist.name.toLowerCase().includes(q) ||
         p.landmarks.some((l) => l.toLowerCase().includes(q))
       return matchesTag && matchesSearch
@@ -45,12 +45,12 @@ export const AllWorldsGrid: React.FC<AllWorldsGridProps> = ({
       >
         <header className="atlas-modal-header">
           <div>
-            <span className="atlas-eyebrow">// 全6作品アーカイブ • ALL THREE.JS WORLDS ATLAS</span>
-            <h2 className="atlas-title">DISCOVER ALL 6 INTERACTIVE WORLDS</h2>
+            <span className="atlas-eyebrow">COLLECTION DIRECTORY • 06 WORLDS</span>
+            <h2 className="atlas-title">Browse All Interactive 3D Worlds</h2>
           </div>
 
           <button type="button" className="atlas-close-btn" onClick={onClose}>
-            ✕ CLOSE ATLAS
+            <span>✕ Close</span>
           </button>
         </header>
 
@@ -71,7 +71,7 @@ export const AllWorldsGrid: React.FC<AllWorldsGridProps> = ({
           <div className="atlas-search-box">
             <input
               type="search"
-              placeholder="Search character, landmark, shader..."
+              placeholder="Search world, character, shader..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -79,56 +79,41 @@ export const AllWorldsGrid: React.FC<AllWorldsGridProps> = ({
         </div>
 
         <div className="atlas-cards-grid">
-          {filteredProjects.map((proj) => {
-            return (
-              <div
-                key={proj.slug}
-                className="atlas-world-card"
-                style={
-                  {
-                    '--card-ring': proj.palette.portalOuterRing,
-                    '--card-sky': proj.palette.portalSkyTop,
-                    '--card-accent': proj.protagonist.accentColor,
-                  } as React.CSSProperties
-                }
+          {filteredProjects.map((proj) => (
+            <div
+              key={proj.slug}
+              className="atlas-world-card"
+              style={
+                {
+                  '--card-accent': proj.palette.accentBar,
+                } as React.CSSProperties
+              }
+            >
+              <a
+                href={proj.worldUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="atlas-card-screen-wrap"
+                title={`Open ${proj.fullTitle} in a new tab`}
               >
-                <div className="atlas-card-top">
-                  <span className="atlas-card-id">{proj.categoryJp}</span>
-                  <div className="atlas-card-pill">
-                    <span>{proj.pillLeft}</span>
-                    <strong>{proj.pillRight}</strong>
-                  </div>
+                <img
+                  src={proj.screenshotUrl}
+                  alt={`${proj.fullTitle} real 3D screen`}
+                  className="atlas-card-screen-img"
+                  loading="lazy"
+                />
+                <span className="atlas-card-num-badge">{proj.id}</span>
+                <span className="atlas-card-hover-pill">Launch ↗</span>
+              </a>
+
+              <div className="atlas-card-body">
+                <div className="atlas-card-meta-row">
+                  <span className="atlas-card-cat">{proj.categoryEn}</span>
+                  <span className="atlas-card-spec">{proj.pillRight}</span>
                 </div>
 
-                <div className="atlas-card-main">
-                  <div className="atlas-card-text">
-                    <h3>{proj.sheetTitle}</h3>
-                    <h4>{proj.fullTitle}</h4>
-                    <p>{proj.conceptHeadlineEn}</p>
-                  </div>
-
-                  {/* Mini circular emblem preview that opens in a new page */}
-                  <a
-                    href={proj.worldUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="atlas-mini-orb"
-                    title={`Open ${proj.fullTitle} in a new page`}
-                  >
-                    <div className="atlas-mini-orb-inner">
-                      <span className="atlas-orb-play">↗</span>
-                    </div>
-                  </a>
-                </div>
-
-                <div className="atlas-card-protagonist">
-                  <span
-                    className="protagonist-dot"
-                    style={{ background: proj.protagonist.badgeColor }}
-                  />
-                  <strong>{proj.protagonist.name}</strong>
-                  <span>• {proj.protagonist.trait}</span>
-                </div>
+                <h3 className="atlas-card-title">{proj.fullTitle}</h3>
+                <p className="atlas-card-desc">{proj.shortSummary}</p>
 
                 <div className="atlas-card-actions">
                   <button
@@ -139,20 +124,21 @@ export const AllWorldsGrid: React.FC<AllWorldsGridProps> = ({
                       onClose()
                     }}
                   >
-                    ↓ Scroll to Section
+                    View Details
                   </button>
                   <a
                     href={proj.worldUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="atlas-btn-primary atlas-link-btn"
+                    className="atlas-btn-primary"
                   >
-                    ↗ Open in New Page
+                    <span>Open 3D World</span>
+                    <span aria-hidden="true">↗</span>
                   </a>
                 </div>
               </div>
-            )
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </div>

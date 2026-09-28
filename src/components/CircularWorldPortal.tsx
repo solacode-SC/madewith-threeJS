@@ -308,6 +308,24 @@ const WorldMiniatureScene: React.FC<MiniatureDioramaProps> = ({ slug, hovered })
             </group>
           )}
 
+          {slug === 'maple-valley-city' && (
+            <group>
+              {/* Shanshui Celadon Mountain & Curved Slate House + Persimmon Maple */}
+              <mesh position={[0, 0.35, -0.15]}>
+                <coneGeometry args={[0.72, 0.72, 16]} />
+                <meshStandardMaterial color="#B5C0A6" roughness={0.55} />
+              </mesh>
+              <mesh position={[-0.18, 0.28, 0.18]}>
+                <boxGeometry args={[0.56, 0.38, 0.44]} />
+                <meshStandardMaterial color="#FAF3E6" roughness={0.6} />
+              </mesh>
+              <mesh position={[0.36, 0.48, 0.24]}>
+                <sphereGeometry args={[0.28, 16, 16]} />
+                <meshStandardMaterial color="#F06430" roughness={0.45} />
+              </mesh>
+            </group>
+          )}
+
           <StarCrown color="#FDE047" y={1.08} />
         </group>
 
@@ -329,6 +347,9 @@ const WorldMiniatureScene: React.FC<MiniatureDioramaProps> = ({ slug, hovered })
         )}
         {slug === 'sunlit-adobe-maze' && (
           <ChibiFigureMini coatColor="#EF4444" hairColor="#18181B" />
+        )}
+        {slug === 'maple-valley-city' && (
+          <ChibiFigureMini coatColor="#E25B2B" hairColor="#332620" />
         )}
 
         {/* Cute Companion Props on the Pasture (like the little cows in the reference image!) */}

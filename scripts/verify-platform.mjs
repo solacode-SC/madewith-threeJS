@@ -14,6 +14,7 @@ const WORLD_SLUGS = [
   'palm-village-maze',
   'santorini-sea-maze',
   'sunlit-adobe-maze',
+  'maple-valley-city',
 ]
 
 async function sleep(ms) {
@@ -28,7 +29,7 @@ async function runVerification() {
   })
 
   try {
-    await sleep(700)
+    await sleep(1500)
 
     // 1. Check /healthz
     const healthRes = await fetch(`${BASE}/healthz`)
@@ -45,8 +46,17 @@ async function runVerification() {
     }
     console.log('✔ / (Root Showcase Platform): HTTP 200 OK')
 
-    // 3. Check each of the 6 bundled worlds + their JS/CSS assets
+    // 3. Check each of the 7 bundled worlds, their JS/CSS assets, and their real 3D screenshots
     for (const slug of WORLD_SLUGS) {
+      const shotRes = await fetch(`${BASE}/screenshots/${slug}.png`)
+      if (shotRes.status !== 200) {
+        throw new Error(`/screenshots/${slug}.png returned ${shotRes.status}`)
+      }
+      const shotBytes = (await shotRes.arrayBuffer()).byteLength
+      if (shotBytes < 50000) {
+        throw new Error(`/screenshots/${slug}.png seems too small (${shotBytes} bytes)`)
+      }
+
       const worldRes = await fetch(`${BASE}/worlds/${slug}/`)
       if (worldRes.status !== 200) {
         throw new Error(`/worlds/${slug}/ returned ${worldRes.status}`)
@@ -71,10 +81,12 @@ async function runVerification() {
         }
       }
 
-      console.log(`✔ /worlds/${slug}/ + JS/CSS bundle: HTTP 200 OK`)
+      console.log(
+        `✔ /worlds/${slug}/ + /screenshots/${slug}.png (${Math.round(shotBytes / 1024)} KB): HTTP 200 OK`
+      )
     }
 
-    console.log('\n✦ All platform & 6 Three.js world endpoints verified successfully!')
+    console.log('\n✦ All platform, real 3D screenshots & 7 Three.js world endpoints verified!')
   } finally {
     srv.kill()
   }

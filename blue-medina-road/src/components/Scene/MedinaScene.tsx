@@ -18,10 +18,13 @@ interface MedinaSceneProps {
   flyMarker: [number, number, number] | null;
   characterPosRef: React.MutableRefObject<THREE.Vector3>;
   characterYawRef: React.MutableRefObject<number>;
+  characterSpeedRef: React.MutableRefObject<number>;
+  waveTimerRef: React.MutableRefObject<number>;
   flightAltitudeOffsetRef: React.MutableRefObject<number>;
   flyTargetRef: React.MutableRefObject<THREE.Vector3 | null>;
   virtualInputRef: React.MutableRefObject<VirtualFlightInput>;
   onSelectCameraMode: (mode: CameraMode) => void;
+  onCycleCameraMode: () => void;
   onRoadClick: (point: THREE.Vector3) => void;
   onClearFlyTarget: () => void;
   onManualMove: () => void;
@@ -39,10 +42,13 @@ export default function MedinaScene({
   flyMarker,
   characterPosRef,
   characterYawRef,
+  characterSpeedRef,
+  waveTimerRef,
   flightAltitudeOffsetRef,
   flyTargetRef,
   virtualInputRef,
   onSelectCameraMode,
+  onCycleCameraMode,
   onRoadClick,
   onClearFlyTarget,
   onManualMove,
@@ -54,10 +60,11 @@ export default function MedinaScene({
   return (
     <Canvas
       shadows
-      dpr={[1, 2]}
-      camera={{ position: [0, 1.95, 6.2], fov: 40, near: 0.1, far: 240 }}
+      dpr={[1, 1.75]}
+      camera={{ position: [0, 1.75, 4.95], fov: 40, near: 0.1, far: 240 }}
       gl={{
         antialias: true,
+        powerPreference: 'high-performance',
         toneMapping: THREE.ACESFilmicToneMapping,
         toneMappingExposure: 1.08,
       }}
@@ -65,7 +72,11 @@ export default function MedinaScene({
       <Suspense fallback={null}>
         <SkyAndAtmosphere timeOfDay={timeOfDay} characterPosRef={characterPosRef} />
 
-        <CameraRig cameraMode={cameraMode} characterPosRef={characterPosRef} />
+        <CameraRig
+          cameraMode={cameraMode}
+          characterPosRef={characterPosRef}
+          onCycleCameraMode={onCycleCameraMode}
+        />
 
         <BlueMedinaRoad
           timeOfDay={timeOfDay}
@@ -83,9 +94,12 @@ export default function MedinaScene({
 
         <FlyingChibiGirl
           autoFly={autoFly}
+          cameraMode={cameraMode}
           collectedStars={collectedStars}
           characterPosRef={characterPosRef}
           characterYawRef={characterYawRef}
+          characterSpeedRef={characterSpeedRef}
+          waveTimerRef={waveTimerRef}
           flightAltitudeOffsetRef={flightAltitudeOffsetRef}
           flyTargetRef={flyTargetRef}
           virtualInputRef={virtualInputRef}

@@ -19,13 +19,13 @@ export const CAMERA_MODES: Record<
 > = {
   follow: {
     label: '✨ Follow Flight',
-    position: [0, 1.95, 6.2],
-    target: [0, 1.45, -1.2],
+    position: [0, 1.85, 4.9],
+    target: [0, 1.5, -1.0],
   },
   vista: {
     label: "🎨 Painter's Vista",
-    position: [0, 1.82, 6.6],
-    target: [0, 2.35, -6.5],
+    position: [0.18, 1.78, 4.4],
+    target: [0, 1.72, -4.5],
   },
   fountain: {
     label: '⛲ Sky Fountain',
@@ -60,6 +60,7 @@ export interface VirtualFlightInput {
   ascend: boolean;
   descend: boolean;
   boost: boolean;
+  wave: boolean;
 }
 
 export function useSceneState() {
@@ -76,11 +77,14 @@ export function useSceneState() {
 
   // Mutable 60fps refs for the flying character
   const startZ = 1.4;
-  const startY = getRoadElevationY(startZ) + 0.92;
+  const startY = getRoadElevationY(startZ) + 0.88;
   const characterPosRef = useRef<THREE.Vector3>(new THREE.Vector3(0, startY, startZ));
-  const characterYawRef = useRef<number>(Math.PI); // Facing up the stairs (-Z)
-  const flightAltitudeOffsetRef = useRef<number>(0.92); // Hover height above steps
+  // Start facing toward the camera with a cheerful wave so her face, eyes, and hair shine!
+  const characterYawRef = useRef<number>(0.14);
+  const characterSpeedRef = useRef<number>(0);
+  const flightAltitudeOffsetRef = useRef<number>(0.88); // Hover height above steps
   const flyTargetRef = useRef<THREE.Vector3 | null>(null);
+  const waveTimerRef = useRef<number>(2.8);
   const [flyMarker, setFlyMarker] = useState<[number, number, number] | null>(null);
 
   const virtualInputRef = useRef<VirtualFlightInput>({
@@ -91,6 +95,7 @@ export function useSceneState() {
     ascend: false,
     descend: false,
     boost: false,
+    wave: false,
   });
 
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -103,6 +108,7 @@ export function useSceneState() {
       if (zone) {
         if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
         setDiscoveryToast(zone);
+        waveTimerRef.current = 1.8;
         toastTimerRef.current = setTimeout(() => {
           setDiscoveryToast(null);
         }, 4200);
@@ -112,7 +118,11 @@ export function useSceneState() {
   }, []);
 
   const collectStar = useCallback((starId: number) => {
-    setCollectedStars((prev) => (prev.includes(starId) ? prev : [...prev, starId]));
+    setCollectedStars((prev) => {
+      if (prev.includes(starId)) return prev;
+      waveTimerRef.current = 1.4;
+      return [...prev, starId];
+    });
   }, []);
 
   const cycleTimeOfDay = useCallback(() => {
@@ -123,12 +133,24 @@ export function useSceneState() {
     });
   }, []);
 
+  const cycleCameraMode = useCallback(() => {
+    const order: CameraMode[] = ['follow', 'vista', 'fountain', 'summit', 'aerial'];
+    setCameraMode((prev) => {
+      const nextIdx = (order.indexOf(prev) + 1) % order.length;
+      if (order[nextIdx] === 'vista') {
+        waveTimerRef.current = 2.6;
+      }
+      return order[nextIdx];
+    });
+  }, []);
+
   const toggleAutoFly = useCallback(() => {
     setAutoFly((prev) => {
       const next = !prev;
       if (next) {
         flyTargetRef.current = null;
         setFlyMarker(null);
+        waveTimerRef.current = 0;
         setCameraMode('follow');
       }
       return next;
@@ -145,6 +167,7 @@ export function useSceneState() {
     const target = new THREE.Vector3(clampedX, roadY + flightAltitudeOffsetRef.current, clampedZ);
     flyTargetRef.current = target;
     setFlyMarker([clampedX, roadY + 0.08, clampedZ]);
+    waveTimerRef.current = 0;
     setAutoFly(false);
     setCameraMode('follow');
   }, []);
@@ -183,6 +206,7 @@ export function useSceneState() {
       const dest = new THREE.Vector3(targetX, targetY, targetZ);
       flyTargetRef.current = dest;
       setFlyMarker([targetX, getRoadElevationY(targetZ) + 0.08, targetZ]);
+      waveTimerRef.current = 0;
       setAutoFly(false);
       setCameraMode('follow');
       triggerZoneDiscovery(zone.id);
@@ -202,12 +226,15 @@ export function useSceneState() {
     flyMarker,
     characterPosRef,
     characterYawRef,
+    characterSpeedRef,
     flightAltitudeOffsetRef,
     flyTargetRef,
+    waveTimerRef,
     virtualInputRef,
     setCameraMode,
     setHoveredItem,
     cycleTimeOfDay,
+    cycleCameraMode,
     toggleAutoFly,
     triggerZoneDiscovery,
     collectStar,

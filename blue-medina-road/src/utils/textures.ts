@@ -5,6 +5,16 @@ const pseudoRandom = (seed: number) => {
   return x - Math.floor(x);
 };
 
+let cachedStepTex: { map: THREE.CanvasTexture; bumpMap: THREE.CanvasTexture } | null = null;
+const cachedWallTex: Partial<
+  Record<
+    'blue-lower' | 'white-plaster' | 'deep-cobalt',
+    { map: THREE.CanvasTexture; bumpMap: THREE.CanvasTexture }
+  >
+> = {};
+let cachedCeramicTex: { map: THREE.CanvasTexture; bumpMap: THREE.CanvasTexture } | null = null;
+let cachedZellijTex: THREE.CanvasTexture | null = null;
+
 /**
  * Painterly cobalt & cerulean step texture with palette-knife strokes
  * and signature whitewash paint drips matching Reference Image 1.
@@ -13,6 +23,8 @@ export function createCobaltStepTextures(): {
   map: THREE.CanvasTexture;
   bumpMap: THREE.CanvasTexture;
 } {
+  if (cachedStepTex) return cachedStepTex;
+
   const size = 512;
   const cCanvas = document.createElement('canvas');
   cCanvas.width = size;
@@ -85,7 +97,7 @@ export function createCobaltStepTextures(): {
     bCtx.stroke();
   }
 
-  // Authentic whitewash paint splashes & vertical riser drips (exact detail from Image 1!)
+  // Authentic whitewash paint splashes & vertical riser drips
   for (let i = 0; i < 38; i++) {
     const dripX = 160 + pseudoRandom(i * 11 + 3) * 190;
     const dripY = pseudoRandom(i * 11 + 7) * size;
@@ -109,23 +121,30 @@ export function createCobaltStepTextures(): {
   const map = new THREE.CanvasTexture(cCanvas);
   map.wrapS = THREE.RepeatWrapping;
   map.wrapT = THREE.RepeatWrapping;
+  map.anisotropy = 4;
   map.colorSpace = THREE.SRGBColorSpace;
 
   const bumpMap = new THREE.CanvasTexture(bCanvas);
   bumpMap.wrapS = THREE.RepeatWrapping;
   bumpMap.wrapT = THREE.RepeatWrapping;
+  bumpMap.anisotropy = 4;
 
-  return { map, bumpMap };
+  cachedStepTex = { map, bumpMap };
+  return cachedStepTex;
 }
 
 /**
  * Chefchaouen two-tone plaster wall texture:
  * Rich cobalt/sky-blue hand-brushed lower wall blending into crisp chalk-white upper lime plaster.
  */
-export function createMedinaWallTextures(variant: 'blue-lower' | 'white-plaster' | 'deep-cobalt' = 'blue-lower'): {
+export function createMedinaWallTextures(
+  variant: 'blue-lower' | 'white-plaster' | 'deep-cobalt' = 'blue-lower'
+): {
   map: THREE.CanvasTexture;
   bumpMap: THREE.CanvasTexture;
 } {
+  if (cachedWallTex[variant]) return cachedWallTex[variant]!;
+
   const size = 512;
   const cCanvas = document.createElement('canvas');
   cCanvas.width = size;
@@ -152,7 +171,7 @@ export function createMedinaWallTextures(variant: 'blue-lower' | 'white-plaster'
     cCtx.fillStyle = grad;
     cCtx.fillRect(0, 0, size, size);
   } else {
-    // Classic Image 1 gradient: chalky white upper wall -> sky blue -> deep cobalt base
+    // Classic gradient: chalky white upper wall -> sky blue -> deep cobalt base
     const grad = cCtx.createLinearGradient(0, 0, 0, size);
     grad.addColorStop(0, '#fbfdff');
     grad.addColorStop(0.32, '#f4f8ff');
@@ -208,22 +227,27 @@ export function createMedinaWallTextures(variant: 'blue-lower' | 'white-plaster'
   const map = new THREE.CanvasTexture(cCanvas);
   map.wrapS = THREE.RepeatWrapping;
   map.wrapT = THREE.ClampToEdgeWrapping;
+  map.anisotropy = 4;
   map.colorSpace = THREE.SRGBColorSpace;
 
   const bumpMap = new THREE.CanvasTexture(bCanvas);
   bumpMap.wrapS = THREE.RepeatWrapping;
   bumpMap.wrapT = THREE.ClampToEdgeWrapping;
+  bumpMap.anisotropy = 4;
 
-  return { map, bumpMap };
+  cachedWallTex[variant] = { map, bumpMap };
+  return cachedWallTex[variant]!;
 }
 
 /**
- * Chalky whitewashed ceramic amphora texture matching the large foreground pots in Image 1.
+ * Chalky whitewashed ceramic amphora texture matching the large foreground pots.
  */
 export function createCeramicPotTextures(): {
   map: THREE.CanvasTexture;
   bumpMap: THREE.CanvasTexture;
 } {
+  if (cachedCeramicTex) return cachedCeramicTex;
+
   const size = 256;
   const cCanvas = document.createElement('canvas');
   cCanvas.width = size;
@@ -267,26 +291,31 @@ export function createCeramicPotTextures(): {
 
     bCtx.fillStyle = i % 2 === 0 ? 'rgba(250,250,250,0.4)' : 'rgba(80,80,80,0.35)';
     bCtx.beginPath();
-    bCtx.arc(x, y, r * 0.7, 0, Math.PI * 2);
+    cCtx.arc(x, y, r * 0.7, 0, Math.PI * 2);
     bCtx.fill();
   }
 
   const map = new THREE.CanvasTexture(cCanvas);
   map.wrapS = THREE.RepeatWrapping;
   map.wrapT = THREE.RepeatWrapping;
+  map.anisotropy = 4;
   map.colorSpace = THREE.SRGBColorSpace;
 
   const bumpMap = new THREE.CanvasTexture(bCanvas);
   bumpMap.wrapS = THREE.RepeatWrapping;
   bumpMap.wrapT = THREE.RepeatWrapping;
+  bumpMap.anisotropy = 4;
 
-  return { map, bumpMap };
+  cachedCeramicTex = { map, bumpMap };
+  return cachedCeramicTex;
 }
 
 /**
  * Moroccan Zellij geometric star mosaic tile texture for fountains, arches & plazas.
  */
 export function createZellijTileTexture(): THREE.CanvasTexture {
+  if (cachedZellijTex) return cachedZellijTex;
+
   const size = 256;
   const canvas = document.createElement('canvas');
   canvas.width = size;
@@ -331,6 +360,8 @@ export function createZellijTileTexture(): THREE.CanvasTexture {
   tex.wrapS = THREE.RepeatWrapping;
   tex.wrapT = THREE.RepeatWrapping;
   tex.repeat.set(3, 3);
+  tex.anisotropy = 4;
   tex.colorSpace = THREE.SRGBColorSpace;
-  return tex;
+  cachedZellijTex = tex;
+  return cachedZellijTex;
 }

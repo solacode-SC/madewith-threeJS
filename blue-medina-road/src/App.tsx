@@ -20,10 +20,13 @@ export default function App() {
     flyMarker,
     characterPosRef,
     characterYawRef,
+    characterSpeedRef,
+    waveTimerRef,
     flightAltitudeOffsetRef,
     flyTargetRef,
     virtualInputRef,
     setCameraMode,
+    cycleCameraMode,
     setHoveredItem,
     cycleTimeOfDay,
     toggleAutoFly,
@@ -83,10 +86,13 @@ export default function App() {
         flyMarker={flyMarker}
         characterPosRef={characterPosRef}
         characterYawRef={characterYawRef}
+        characterSpeedRef={characterSpeedRef}
+        waveTimerRef={waveTimerRef}
         flightAltitudeOffsetRef={flightAltitudeOffsetRef}
         flyTargetRef={flyTargetRef}
         virtualInputRef={virtualInputRef}
         onSelectCameraMode={setCameraMode}
+        onCycleCameraMode={cycleCameraMode}
         onRoadClick={handleRoadClick}
         onClearFlyTarget={clearFlyTarget}
         onManualMove={stopAutoFlyOnManualInput}
