@@ -15,6 +15,7 @@ const WORLD_SLUGS = [
   'santorini-sea-maze',
   'sunlit-adobe-maze',
   'maple-valley-city',
+  'sky-biplane-village',
 ]
 
 const forceRebuild = process.argv.includes('--rebuild')

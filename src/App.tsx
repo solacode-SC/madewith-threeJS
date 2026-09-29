@@ -155,7 +155,7 @@ export default function App() {
         {/* Section Header & Layout Switcher */}
         <div id="projects-collection" className="collection-section-header">
           <div className="collection-title-group">
-            <span className="collection-eyebrow">FEATURED 3D EXPERIENCES • 01 — 07</span>
+            <span className="collection-eyebrow">FEATURED 3D EXPERIENCES • 01 — 08</span>
             <h2 className="collection-heading">Real-Time WebGL Worlds</h2>
           </div>
 
@@ -179,7 +179,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* 2. Presentation of All 7 Three.js Projects with Real Screens */}
+        {/* 2. Presentation of All 8 Three.js Projects with Real Screens */}
         {layoutMode === 'editorial' ? (
           <section className="projects-vertical-stack" aria-label="Three.js Project Presentations">
             {PROJECT_WORLDS.map((project, index) => (
@@ -280,7 +280,7 @@ export default function App() {
                 <span className="studio-brand-title">MADE WITH THREE.JS</span>
               </div>
               <p className="footer-desc">
-                Seven standalone interactive 3D worlds built with Three.js, React Three Fiber, and
+                Eight standalone interactive 3D worlds built with Three.js, React Three Fiber, and
                 custom GLSL shaders. Click any world to explore the live WebGL scene in a new tab.
               </p>
             </div>

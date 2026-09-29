@@ -1,6 +1,6 @@
 # MADE WITH THREE.JS — Interactive Concept Sheet & 3D World Discovery Platform
 
-An editorial Japanese game-concept-sheet showcase (`// 作品コンセプト図鑑`) and interactive launcher for all **7 Three.js / React Three Fiber worlds** in this repository:
+An editorial Japanese game-concept-sheet showcase (`// 作品コンセプト図鑑`) and interactive launcher for all **8 Three.js / React Three Fiber worlds** in this repository:
 
 1. **`01 • AZURE MEDINA!`** ([`blue-medina-road`](./blue-medina-road)) — *Lumina & the Azure Steps*
 2. **`02 • SUMOMALO COAST!`** ([`coastal-house`](./coastal-house)) — *Sumomalo Coffee & Wandering Ronin*
@@ -9,6 +9,7 @@ An editorial Japanese game-concept-sheet showcase (`// 作品コンセプト図�
 5. **`05 • SANTORINI SEA!`** ([`santorini-sea-maze`](./santorini-sea-maze)) — *Midori & the Santorini Sea Maze*
 6. **`06 • SUNLIT ADOBE!`** ([`sunlit-adobe-maze`](./sunlit-adobe-maze)) — *Mina & the Sunlit Mashrabiya Labyrinth*
 7. **`07 • MAPLE BRUSH VALLEY!`** ([`maple-valley-city`](./maple-valley-city)) — *Kaede & the Maple Brush Valley*
+8. **`08 • SKY BIPLANE VILLAGE!`** ([`sky-biplane-village`](./sky-biplane-village)) — *Sora & the Meadow Sky Biplane*
 
 ---
 

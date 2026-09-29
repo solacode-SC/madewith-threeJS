@@ -7,6 +7,7 @@ import ShanshuiMountains from './ShanshuiMountains';
 import VillageBuildings from './VillageBuildings';
 import BrushBotanyAndRoads from './BrushBotanyAndRoads';
 import GreenMeadowAndAnimals from './GreenMeadowAndAnimals';
+import VillageNpcs from './VillageNpcs';
 import VillageTraveler from './VillageTraveler';
 import CityCameraRig from './CityCameraRig';
 import PainterlyPostFX from './PainterlyPostFX';
@@ -64,7 +65,7 @@ export default function CityCanvas({
     <Canvas
       shadows
       dpr={[1, 1.5]}
-      camera={{ position: [-0.38, 1.45, 13.6], fov: 52, near: 0.1, far: 240 }}
+      camera={{ position: [-0.38, 1.45, 13.6], fov: 52, near: 0.1, far: 440 }}
       gl={{
         antialias: true,
         powerPreference: 'high-performance',
@@ -98,6 +99,13 @@ export default function CityCanvas({
         />
 
         <GreenMeadowAndAnimals
+          onRoadClick={onRoadClick}
+          onHover={onHover}
+        />
+
+        <VillageNpcs
+          characterPosRef={characterPosRef}
+          waveTimerRef={waveTimerRef}
           onRoadClick={onRoadClick}
           onHover={onHover}
         />

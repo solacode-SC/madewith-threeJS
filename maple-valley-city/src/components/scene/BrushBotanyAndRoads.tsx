@@ -797,7 +797,7 @@ export default function BrushBotanyAndRoads({
 
   return (
     <group>
-      {/* Out-of-City Lush Green Meadow Land (240x240) — Clickable to Stroll into the Pastures! */}
+      {/* Out-of-City Lush Green Meadow Land (360x360) — Reaches all the way to the Outer Mountains! */}
       <mesh
         position={[0, -0.05, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
@@ -813,7 +813,7 @@ export default function BrushBotanyAndRoads({
         }}
         onPointerOut={() => onHover(null)}
       >
-        <planeGeometry args={[240, 240]} />
+        <planeGeometry args={[360, 360]} />
       </mesh>
 
       {/* Rolling Green Meadow Hills Outside the City */}

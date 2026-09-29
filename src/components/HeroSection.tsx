@@ -42,7 +42,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </h1>
 
             <p className="hero-subtitle">
-              A curated collection of seven standalone real-time 3D environments featuring custom
+              A curated collection of eight standalone real-time 3D environments featuring custom
               shaders, stylized characters, and spatial navigation. Every screen below is captured
               directly from the live WebGL experience.
             </p>
@@ -53,7 +53,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="hero-btn-primary"
                 onClick={() => onScrollToProject(projects[projects.length - 1].slug)}
               >
-                <span>Explore All 7 Worlds</span>
+                <span>Explore All 8 Worlds</span>
                 <span className="btn-icon-down" aria-hidden="true">
                   ↓
                 </span>
@@ -70,7 +70,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
             <div className="hero-metrics-bar">
               <div className="hero-metric-item">
-                <strong>07</strong>
+                <strong>08</strong>
                 <span>Standalone Worlds</span>
               </div>
               <div className="hero-metric-divider" />

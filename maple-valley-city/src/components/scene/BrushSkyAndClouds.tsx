@@ -58,89 +58,144 @@ export default function BrushSkyAndClouds({
   }, [theme, skyMat, cloudShaderMat]);
 
   /**
-   * Build batched, high-altitude sculpted watercolor brush clouds floating high in the sky dome.
-   * All low-hanging ground/valley mist & smoke have been removed so the street, house, and meadow views are 100% clear!
+   * Build batched, High-Draw Anime Cumulonimbus & Cirrus Sky Clouds floating high on the outer sky horizon.
+   * Placed at ringRadius = 158..228 and altitude cy = 62..106 so they frame the upper sky above/behind the
+   * distant mountains and NEVER cover the city, green meadow, or mountain views!
    */
   const highCloudsGeo = useMemo(() => {
     const highBuckets: THREE.BufferGeometry[] = [];
     const identity = new THREE.Matrix4();
 
-    const puffUnit = createBrushCloudFoliageGeometry(1, 1, 1, 11, 2);
-    const softSweepUnit = createBrushCloudFoliageGeometry(1.4, 0.55, 0.9, 29, 2);
+    const domeUnit = createBrushCloudFoliageGeometry(1.0, 0.95, 0.95, 11, 2);
+    const puffUnit = createBrushCloudFoliageGeometry(1.15, 0.82, 1.0, 23, 2);
+    const anvilSweepUnit = createBrushCloudFoliageGeometry(1.65, 0.44, 0.88, 37, 2);
+    const wispRibbonUnit = createBrushCloudFoliageGeometry(2.1, 0.26, 0.62, 53, 1);
 
-    // 28 High-Altitude Sky Watercolor Brush Clouds floating well above the mountain peaks
-    for (let i = 0; i < 28; i++) {
-      const angle = (i / 28) * Math.PI * 2 + pseudoRandom(i * 7 + 1) * 0.22;
-      const ringRadius = 58 + pseudoRandom(i * 7 + 2) * 44;
+    const cloudCount = 24;
+    for (let i = 0; i < cloudCount; i++) {
+      const angle = (i / cloudCount) * Math.PI * 2 + (pseudoRandom(i * 11 + 1) - 0.5) * 0.14;
+      const ringRadius = 162 + pseudoRandom(i * 11 + 2) * 56; // 162..218 (behind/above outer mountains!)
       const cx = Math.sin(angle) * ringRadius;
-      const cz = Math.cos(angle) * ringRadius - 6;
-      const cy = 26.0 + pseudoRandom(i * 7 + 3) * 15.0;
-      const baseScale = 3.6 + pseudoRandom(i * 7 + 4) * 3.8;
-      const yaw = pseudoRandom(i * 7 + 5) * Math.PI;
+      const cz = Math.cos(angle) * ringRadius;
 
-      // Central billowy brush crown
+      // Keep the central Northern mountain summit sightline extra high so the Hero Peak silhouette is 100% unobstructed
+      const isNorthCenter = cz < -90 && Math.abs(cx) < 48;
+      const cy = (isNorthCenter ? 82.0 : 62.0) + pseudoRandom(i * 11 + 3) * 28.0;
+      const baseScale = 5.4 + pseudoRandom(i * 11 + 4) * 4.2;
+      const yaw = angle + Math.PI * 0.5 + (pseudoRandom(i * 11 + 5) - 0.5) * 0.35;
+      const cosY = Math.cos(yaw);
+      const sinY = Math.sin(yaw);
+
+      // 1. Wide Flat-Bottomed Anime Cumulonimbus Anvil Base
       pushTransformedGeo(
         highBuckets,
-        puffUnit,
+        anvilSweepUnit,
         identity,
         cx,
-        cy,
+        cy - baseScale * 0.36,
         cz,
         0,
         yaw,
         0,
-        baseScale * 1.6,
-        baseScale * 0.7,
-        baseScale * 1.12
+        baseScale * 1.95,
+        baseScale * 0.58,
+        baseScale * 1.18
       );
-      // Left & right sweeping brush-tail lobes
+
+      // 2. Towering Central Anime Cumulus Turret Crown
       pushTransformedGeo(
         highBuckets,
-        softSweepUnit,
+        domeUnit,
         identity,
-        cx - Math.cos(yaw) * baseScale * 1.15,
-        cy - baseScale * 0.14,
-        cz + Math.sin(yaw) * baseScale * 1.15,
+        cx,
+        cy + baseScale * 0.42,
+        cz,
         0,
-        yaw + 0.15,
-        0.05,
-        baseScale * 1.2,
-        baseScale * 0.62,
+        yaw,
+        0,
+        baseScale * 1.38,
+        baseScale * 1.28,
+        baseScale * 1.18
+      );
+
+      // 3. Highest Sunlit Cauliflower Summit Puff
+      pushTransformedGeo(
+        highBuckets,
+        domeUnit,
+        identity,
+        cx + cosY * baseScale * 0.25,
+        cy + baseScale * 1.05,
+        cz - sinY * baseScale * 0.25,
+        0,
+        yaw + 0.3,
+        0,
+        baseScale * 0.96,
+        baseScale * 0.95,
         baseScale * 0.92
       );
+
+      // 4. Multi-Lobed Secondary Billowing Shoulders (Left & Right)
+      const lobeOffsets = [
+        [-1.15, 0.08, 0.98, 0.88],
+        [1.18, 0.12, 1.02, 0.92],
+        [-0.68, 0.62, 0.86, 0.82],
+        [0.74, 0.58, 0.88, 0.84],
+        [-1.78, -0.18, 0.78, 0.65],
+        [1.82, -0.15, 0.82, 0.68],
+      ];
+      for (let l = 0; l < lobeOffsets.length; l++) {
+        const [ox, oy, sxMul, syMul] = lobeOffsets[l];
+        pushTransformedGeo(
+          highBuckets,
+          puffUnit,
+          identity,
+          cx + cosY * baseScale * ox,
+          cy + baseScale * oy,
+          cz - sinY * baseScale * ox,
+          0,
+          yaw + l * 0.4,
+          0,
+          baseScale * sxMul,
+          baseScale * syMul,
+          baseScale * sxMul * 0.88
+        );
+      }
+
+      // 5. Delicate High-Draw Anime Wind-Swept Trailing Cirrus Ribbons
       pushTransformedGeo(
         highBuckets,
-        softSweepUnit,
+        wispRibbonUnit,
         identity,
-        cx + Math.cos(yaw) * baseScale * 1.18,
-        cy - baseScale * 0.12,
-        cz - Math.sin(yaw) * baseScale * 1.18,
+        cx - cosY * baseScale * 2.35,
+        cy - baseScale * 0.28,
+        cz + sinY * baseScale * 2.35,
         0,
-        yaw - 0.12,
-        -0.05,
-        baseScale * 1.25,
-        baseScale * 0.6,
-        baseScale * 0.9
+        yaw + 0.08,
+        0.04,
+        baseScale * 1.35,
+        baseScale * 0.42,
+        baseScale * 0.75
       );
-      // Upper sunlit brush crest
       pushTransformedGeo(
         highBuckets,
-        puffUnit,
+        wispRibbonUnit,
         identity,
-        cx + (pseudoRandom(i * 7 + 6) - 0.5) * baseScale * 0.55,
-        cy + baseScale * 0.35,
-        cz,
+        cx + cosY * baseScale * 2.4,
+        cy + baseScale * 0.15,
+        cz - sinY * baseScale * 2.4,
         0,
-        yaw,
-        0,
-        baseScale * 1.0,
-        baseScale * 0.56,
-        baseScale * 0.82
+        yaw - 0.08,
+        -0.04,
+        baseScale * 1.28,
+        baseScale * 0.38,
+        baseScale * 0.72
       );
     }
 
+    domeUnit.dispose();
     puffUnit.dispose();
-    softSweepUnit.dispose();
+    anvilSweepUnit.dispose();
+    wispRibbonUnit.dispose();
 
     return mergeBufferGeometries(highBuckets);
   }, []);
@@ -166,8 +221,8 @@ export default function BrushSkyAndClouds({
     cloudShaderMat.uniforms.uTime.value = t;
 
     if (highCloudsGroupRef.current) {
-      highCloudsGroupRef.current.rotation.y = t * 0.0075;
-      highCloudsGroupRef.current.position.y = Math.sin(t * 0.25) * 0.35;
+      highCloudsGroupRef.current.rotation.y = t * 0.0045;
+      highCloudsGroupRef.current.position.y = Math.sin(t * 0.22) * 0.35;
     }
 
     if (petalsRef.current) {
@@ -193,11 +248,11 @@ export default function BrushSkyAndClouds({
   return (
     <>
       <color attach="background" args={[theme.skyHorizon]} />
-      {/* Distant horizon fog pushed far back so ground, houses & green meadow stay crystal clear */}
-      <fog attach="fog" args={[theme.fogColor, 105, 235]} />
+      {/* Distant horizon fog pushed far back beyond the outer mountains so city, green land & peaks stay crystal clear */}
+      <fog attach="fog" args={[theme.fogColor, 195, 395]} />
 
-      {/* Rice-Paper Watercolor Sky Dome */}
-      <mesh material={skyMat} scale={[190, 190, 190]}>
+      {/* Rice-Paper & Anime Watercolor Sky Dome */}
+      <mesh material={skyMat} scale={[360, 360, 360]}>
         <sphereGeometry args={[1, 32, 24]} />
       </mesh>
 
@@ -224,7 +279,7 @@ export default function BrushSkyAndClouds({
         shadow-bias={-0.0004}
       />
 
-      {/* Batched Sculpted High-Altitude Watercolor Sky Clouds */}
+      {/* Batched Sculpted High-Draw Anime Cumulonimbus Sky Clouds (High & Far — Never Covers View!) */}
       <group ref={highCloudsGroupRef}>
         <mesh geometry={highCloudsGeo} material={cloudShaderMat} />
       </group>

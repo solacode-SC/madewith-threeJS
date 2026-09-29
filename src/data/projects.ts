@@ -27,6 +27,7 @@ export interface ProjectWorld {
     | 'santorini-sea-maze'
     | 'sunlit-adobe-maze'
     | 'maple-valley-city'
+    | 'sky-biplane-village'
   worldUrl: string
   screenshotUrl: string
   categoryJp: string
@@ -496,6 +497,68 @@ export const PROJECT_WORLDS: ProjectWorld[] = [
       portalGround: '#F48B95',
       portalHighlight: '#F78E44',
       inkAccent: '#C84B20',
+    },
+  },
+  {
+    id: '08',
+    slug: 'sky-biplane-village',
+    worldUrl: '/worlds/sky-biplane-village/',
+    screenshotUrl: '/screenshots/sky-biplane-village.png',
+    categoryJp: '// 手描き複葉機と大牧場渓谷 • 08',
+    categoryEn: '3X ANIME SKY, RIVER & VILLAGE FLIGHT',
+    sheetTitle: 'Sky Biplane',
+    fullTitle: 'Sora & the Meadow Sky Biplane (3x Valley Edition)',
+    shortSummary:
+      'Pilot a fast vintage open-cockpit biplane in full-view anime cinema framing over a 3x expanded pastoral village of 32 detailed homesteads, a sparkling animated river with 4 arched bridges, articulated strolling & bridge-crossing villagers, and Morning, Noon, Evening & Starry Night modes.',
+    pillLeft: '3x Village & River',
+    pillRight: '6 Anime Cameras',
+    toolBadges: ['Three.js', 'GLSL', 'WebAudio'],
+    tags: ['Fast Biplane Flight', 'Animated River & 4 Bridges', 'Morning / Evening / Night', 'Anime Full View'],
+    highlights: [
+      { label: 'World Scale', value: '3x Village • 32 Homesteads' },
+      { label: 'River & Bridges', value: 'GLSL River + 4 Arched Bridges' },
+      { label: 'Time Modes', value: 'Morning • Noon • Evening • Night' },
+    ],
+    conceptHeadlineJp: '3倍広大な牧場村と煌めく大河・4つの太鼓橋を翔ける複葉機ソラ！！',
+    conceptHeadlineEn: 'Fast Anime Full-View Biplane × 3x Village, Animated River Bridges & Day/Night Modes',
+    conceptLead:
+      'Soar at high speed with dual wingtip vortex ribbons across a 3x larger valley featuring an animated river, 4 arched bridges, articulated waving villagers, rowboats, and live Morning, Evening & Starry Night modes.',
+    featureBracketHeadline: 'ANIME FULL VIEW × 3X VILLAGE & RIVER BRIDGES',
+    featureStory: [
+      'Fly Sora’s vintage open-cockpit biplane with optimized Fast & Turbo Anime speed presets, dynamic speed-FOV zoom, articulated pilot head & fluttering silk scarf, triple sky ribbons (center contrail + dual wingtip trails), and night navigation lights.',
+      'Explore a 3x expanded valley with 32 richly detailed fenced homesteads (window shutters, flower boxes, stone wells, vegetable gardens, golden haystacks, chimney smoke, and glowing streetlamps) connected across a custom GLSL animated river by 4 iconic arched bridges.',
+      'Watch articulated villagers walk the country lanes, climb up and over the 4 river bridges while waving at your biplane, and row wooden skiffs along the sparkling currents — across Morning Mist, High Noon, Crimson Evening, and Starry Night with twinkling stars, full moon, lantern halos, and river fireflies.',
+    ],
+    protagonist: {
+      name: 'Aviator Sora',
+      titleJp: '複葉機の飛行士ソラ',
+      role: 'High-Speed Anime Sky Pilot',
+      badgeColor: '#467E3E',
+      accentColor: '#76B046',
+      trait: 'Dual Wingtip Ribbons & Fast Anime Flight',
+    },
+    landmarks: [
+      'Grand Village Stone & Timber Arch Bridge',
+      'Riverside Watermill, Red Bridge & Rowboats',
+      'Eastern Riverbank Terrace & Sunrise Windmill',
+      'Northern Truss Bridge & Highland Orchards',
+      'Southern Stone Arch Bridge & Cider Market',
+    ],
+    controls: [
+      { keys: 'WASD / G (Speed)', action: 'Fast banking flight & Relaxed / Fast / Turbo speed presets' },
+      { keys: 'Morning / Evening / Night (L)', action: 'Switch Morning Mist, Noon, Crimson Evening & Starry Night' },
+      { keys: 'Click Village / Map', action: 'Bank and fly over 32 homesteads & 4 river bridges' },
+      { keys: '6 Camera Modes (V)', action: 'Anime Full View, Illustration, Overlook, Chase, Wingtip, Cockpit' },
+    ],
+    sketchCallouts: [],
+    palette: {
+      accentBar: '#467E3E',
+      portalOuterRing: '#243B22',
+      portalSkyTop: '#CBE6D8',
+      portalSkyBottom: '#F6F7E4',
+      portalGround: '#8EC652',
+      portalHighlight: '#76B046',
+      inkAccent: '#3A6B33',
     },
   },
 ]
