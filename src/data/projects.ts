@@ -28,6 +28,8 @@ export interface ProjectWorld {
     | 'sunlit-adobe-maze'
     | 'maple-valley-city'
     | 'sky-biplane-village'
+    | 'cobalt-poppy-meadow'
+    | 'harvest-river-canal'
   worldUrl: string
   screenshotUrl: string
   categoryJp: string
@@ -559,6 +561,133 @@ export const PROJECT_WORLDS: ProjectWorld[] = [
       portalGround: '#8EC652',
       portalHighlight: '#76B046',
       inkAccent: '#3A6B33',
+    },
+  },
+  {
+    id: '09',
+    slug: 'cobalt-poppy-meadow',
+    worldUrl: '/worlds/cobalt-poppy-meadow/',
+    screenshotUrl: '/screenshots/cobalt-poppy-meadow.png',
+    categoryJp: '// 原風景の自然 • 蒼碧のポピー花野 • 09',
+    categoryEn: 'PAINTERLY WILDFLOWER SANCTUARY',
+    sheetTitle: 'Cobalt Poppy Meadow',
+    fullTitle: 'Cobalt Poppy Meadow — Pure Nature Wildflower Sanctuary',
+    shortSummary:
+      'Immerse in a pristine hand-painted wildflower sanctuary with zero houses or humans. Over 7,950 instanced cobalt poppies, crimson poppies, cornflowers, and chamomiles sway in real-time GPU wind across rolling sage hills framed by iconic indigo sentinel trees.',
+    pillLeft: '7,950+ Flora Instances',
+    pillRight: 'Pure Nature • 60 FPS',
+    toolBadges: ['Three.js', 'GPU Wind', 'WebAudio'],
+    tags: ['Pure Untouched Nature', 'Zero Buildings/NPCs', 'InstancedMesh Flora', 'Gouache Landscape', 'Generative Soundscape'],
+    highlights: [
+      { label: 'Flora Instances', value: '7,950+ in 5 Draw Calls' },
+      { label: 'Wind Physics', value: '0ms CPU Vertex Displacement' },
+      { label: 'Lighting Moods', value: 'Painterly Noon • Golden • Twilight • Dawn' },
+    ],
+    conceptHeadlineJp: '人工物ゼロの純粋なる自然美！蒼碧のポピーと群青の巨木が彩る絵画世界！！',
+    conceptHeadlineEn: 'Pure Untouched Nature Sanctuary × 7,950+ Wind-Animated Poppies & Indigo Sentinel Trees',
+    conceptLead:
+      'A serene fine-art landscape crafted strictly without human structures or inhabitants. Wander along a sunlit chalky path surrounded by thousands of velvety blue and scarlet poppies with authentic gouache lighting and synthesized meadow audio.',
+    featureBracketHeadline: 'GOUACHE FINE ART × REAL-TIME GPU NATURE SIMULATION',
+    featureStory: [
+      'Authentic fine-art fidelity: Faithfully reproduces the aesthetic, palette, and composition of the hand-painted gouache artwork — featuring towering cobalt blue poppies (Meconopsis), striking crimson poppy accents, radiating sky-blue cornflowers, and ivory chamomile daisies.',
+      'Extreme rendering optimization: 7,950+ wildflowers and tall grass stems batched into just 5 InstancedMesh draw calls, animated smoothly via custom GPU vertex shader wind dynamics with zero CPU recalculation overhead at a locked 60+ FPS.',
+      'Generative nature soundscape: 100% synthesized Web Audio engine delivering organic mountain wind breezes, delicate grass and petal rustles, distant meadow warblers, and calming pentatonic harp chimes.',
+      'Five cinematic camera views: Seamlessly switch between the exact Artwork Canvas View matching the reference painting, a peaceful eye-level Winding Path Stroll with WASD controls, Hilltop Vista, Macro Bloom close-up, and slow Cinematic Breeze Flight.',
+    ],
+    protagonist: {
+      name: 'Wild Nature',
+      titleJp: '大自然の息吹',
+      role: 'Untouched Botanical Sanctuary',
+      badgeColor: '#1E40AF',
+      accentColor: '#3B82F6',
+      trait: '7,950+ Wildflowers & Rustling Grasses in GPU Wind',
+    },
+    landmarks: [
+      'Left Ridge Branching Sentinel Tree',
+      'Right Hilltop Ultramarine Sentinel Tree',
+      'Winding Chalk Sandstone Path',
+      'Tiered Sage & Celadon Rolling Saddle Ridges',
+      'Distant Periwinkle Atmospheric Mountain Range',
+    ],
+    controls: [
+      { keys: 'WASD / Arrow Keys', action: 'Stroll along the winding earthen path among the flowers' },
+      { keys: 'Click & Drag', action: 'Orbit and look around in full 360-degree freedom' },
+      { keys: 'Camera View Presets', action: 'Canvas View, Path Stroll, Hilltop Vista, Macro Bloom, Breeze Drift' },
+      { keys: 'Atmosphere Moods', action: 'Switch Noon Gouache, Golden Hour, Lavender Dusk, Misty Dawn' },
+      { keys: 'Breeze & Sound Controls', action: 'Adjust meadow wind velocity and generative birdsong volume' },
+    ],
+    sketchCallouts: [],
+    palette: {
+      accentBar: '#1E40AF',
+      portalOuterRing: '#172554',
+      portalSkyTop: '#CAD7E6',
+      portalSkyBottom: '#F5F5EC',
+      portalGround: '#8FA87B',
+      portalHighlight: '#3B82F6',
+      inkAccent: '#1E3A8A',
+    },
+  },
+  {
+    id: '10',
+    slug: 'harvest-river-canal',
+    worldUrl: '/worlds/harvest-river-canal/',
+    screenshotUrl: '/screenshots/harvest-river-canal.png',
+    categoryJp: '// 収穫の運河と木造の町 • 10',
+    categoryEn: 'ANIME CANAL VOYAGE',
+    sheetTitle: 'Harvest River Canal',
+    fullTitle: 'Mugi & the Harvest River Canal',
+    shortSummary:
+      'Steer an authentic anime wooden river skiff with Mugi in her golden wheat crown, braided hair and crescent sickle through a rustic multi-story timber canal town, passing 3 stone arch bridges, spinning watermill, river boulders, and autumn fields.',
+    pillLeft: 'GLSL Water Waves',
+    pillRight: 'Heroine Mugi & Sickle',
+    toolBadges: ['Three.js', 'GLSL', 'WebAudio'],
+    tags: ['Anime Boat Voyage', 'Heroine Mugi', 'GLSL River Shader', 'Timber Canal Town', 'Harvest Autumn Landscape'],
+    highlights: [
+      { label: 'Protagonist', value: 'Mugi (Wheat Crown & Sickle)' },
+      { label: 'River Shader', value: 'Custom GLSL Flow & Caustics' },
+      { label: 'Town Scene', value: 'Timber Houses, Chimneys & Boulders' },
+    ],
+    conceptHeadlineJp: '黄金の麦冠と大鎌を携えた少女ムギ × 霧立ち込める木造運河の町！！',
+    conceptHeadlineEn: 'Anime River Skiff Voyage × Heroine Mugi, Weathered Timber Town & River Boulders',
+    conceptLead:
+      'Navigate with Mugi along a winding river canal framed by multi-story timber houses with stone chimneys, river boulders, waving villagers, and falling autumn foliage across 5 cinematic atmospheric moods.',
+    featureBracketHeadline: 'ANIME HEROINE MUGI × GLSL WATER & TIMBER TOWN',
+    featureStory: [
+      'Sculpted 3D wooden canal skiff matching the reference artwork — complete with curved hull ribs, bow prow post, brass lantern with warm volumetric halo, harvested pumpkin crates, and golden wheat sheaves.',
+      'Play with Mugi — crafted with long brown hair in two thick braided pigtails woven with golden wheat stalks, wheat wreath crown, emerald teardrop earrings, embroidered crop top and skirt, leather tool holster, and an ornate silver crescent sickle.',
+      'Explore dense weathered multi-story timber-and-stone houses with smoking chimneys, mossy river boulders in shallow water, and 3 iconic stone arch bridges set to synthesized acoustic accordion and flute themes.',
+    ],
+    protagonist: {
+      name: 'Mugi',
+      titleJp: '麦冠の少女ムギ',
+      role: 'Harvest River Navigator',
+      badgeColor: '#EAB308',
+      accentColor: '#10B981',
+      trait: 'Wheat Wreath, Braided Hair, Crescent Sickle & Mismatched Boots',
+    },
+    landmarks: [
+      'Old Granary & Splash Watermill',
+      'Merchant Stone Arch Bridge',
+      'Sunset Boathouse Quays',
+      'Golden Wheat & Maple River Bend',
+      'Lantern-Lit Canal Lock Gate',
+    ],
+    controls: [
+      { keys: 'WASD / Arrow Keys', action: 'Manual boat steering & speed along canal' },
+      { keys: 'Auto-Cruise (C)', action: 'Toggle hands-free automated canal voyage' },
+      { keys: '6 Camera Modes (V)', action: 'Anime Cinema, Mugi Cam, Manga Angle, Arch Bridge, Bow POV, Postcard' },
+      { keys: '5 Sky Moods (L)', action: 'Moody Anime Canal (Image 1), Golden Harvest, Dawn, Sunset, Night' },
+      { keys: 'Soundtrack (Audio UI)', action: 'Toggle synthesized WebAudio accordion & flute themes' },
+    ],
+    sketchCallouts: [],
+    palette: {
+      accentBar: '#EAB308',
+      portalOuterRing: '#451A03',
+      portalSkyTop: '#4A7C9D',
+      portalSkyBottom: '#FCE7C8',
+      portalGround: '#CA8A04',
+      portalHighlight: '#F59E0B',
+      inkAccent: '#D97706',
     },
   },
 ]

@@ -12,6 +12,8 @@ const WORLD_SLUGS = [
   'sunlit-adobe-maze',
   'maple-valley-city',
   'sky-biplane-village',
+  'cobalt-poppy-meadow',
+  'harvest-river-canal',
 ]
 
 const MIME_TYPES: Record<string, string> = {

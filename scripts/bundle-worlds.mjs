@@ -16,6 +16,8 @@ const WORLD_SLUGS = [
   'sunlit-adobe-maze',
   'maple-valley-city',
   'sky-biplane-village',
+  'cobalt-poppy-meadow',
+  'harvest-river-canal',
 ]
 
 const forceRebuild = process.argv.includes('--rebuild')
@@ -33,7 +35,7 @@ function copyDirRecursive(src, dest) {
   }
 }
 
-console.log('\n✦ [MadeWith-ThreeJS] Bundling 6 interactive 3D worlds for production...\n')
+console.log('\n✦ [MadeWith-ThreeJS] Bundling interactive 3D worlds for production...\n')
 
 for (const slug of WORLD_SLUGS) {
   const projectDir = path.resolve(rootDir, slug)

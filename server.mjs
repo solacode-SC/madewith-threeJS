@@ -131,6 +131,6 @@ server.listen(PORT, HOST, () => {
   console.log(`╠══════════════════════════════════════════════════════════════════╣`)
   console.log(`║  • Local / VPS URL : http://${HOST}:${PORT}                         ║`)
   console.log(`║  • Health Check    : http://${HOST}:${PORT}/healthz                 ║`)
-  console.log(`║  • Bundled Worlds  : 8 Interactive Three.js / R3F Experiences    ║`)
+  console.log(`║  • Bundled Worlds  : 10 Interactive Three.js / R3F Experiences   ║`)
   console.log(`╚══════════════════════════════════════════════════════════════════╝\n`)
 })
